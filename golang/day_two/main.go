@@ -6,28 +6,49 @@ import (
   "strings"
 )
 
-func Answer() (string) {
+func Answer() (int) {
+  var idSum int
   input, err := os.ReadFile("./input/day_two.txt")
 
+//   redCubes := 12
+//   greenCubes := 13
+//   blueCubes := 14
   if err != nil {
     log.Fatal(err)
   }
   games := GetGames(string(input))
 
-  log.Println(games)
-  throws := strings.Split(string(games[0]), ";")
-  log.Println(throws)
-
-  return "Day two"
+  for i := 0; i <= len(games) -1; i++ {
+    a := FormatThrows(games[i])
+    log.Println(games[i])
+    log.Println(a)
+  }
+  // Iterate over games and validate each (ValidateGame)
+    // split by comma and find <int> <color> then validate against total available
+  return idSum
 }
 
-func GetGames(input string) ([]string) {
-  lines := strings.Split(string(input), "\n")
-  log.Println(lines)
+func FormatThrows(throws []string) ([]string) {
+  var formatedThrows []string
+  for j := 0; j <= len(throws) -1; j++ {
+    throws := strings.Split(throws[j], ",")
+    n := strings.Split(throws[0], ",")[0]
+    formatedThrows = strings.Fields(n)
+  }
+  return formatedThrows
+}
 
-  for i := 0; i < len(lines) - 1; i++ {
+func GetGames(input string) ([][]string) {
+  lines := strings.Split(string(input), "\n")
+  var throws [][]string
+
+  for i := 0; i <= len(lines) - 1; i++ {
+    if lines[i] == "" {
+      continue
+    }
     lines[i] = strings.Split(lines[i], ":")[1]
+    throws = append(throws, strings.Split(lines[i], ";"))
   }
 
-  return lines
+  return throws
 }
